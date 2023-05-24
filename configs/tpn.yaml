@@ -1,0 +1,432 @@
+---
+layers:
+
+   # Top-down layer
+  - name: 'top-down'
+    in:
+      - - 0
+        - 1
+    out: 
+      - - 6
+
+    # Top-down operations
+    operations:
+
+      # Group normalization
+      - type: 'groupnorm'
+        num_groups: 8
+        in:
+          - - 0
+        out:
+          - - 2
+
+      # ReLU activation
+      - type: 'relu'
+        in:
+          - - 2
+        out:
+          - - 3
+
+      # Top-down delta projection
+      - type: 'conv2d'
+        out_channels: 256
+        kernel_size: 1
+        in:
+          - - 3
+        out:
+          - - 4
+
+      # Upsample
+      - type: 'interpolate'
+        shape: True
+        mode: 'bilinear'
+        align_corners: False
+        in: 
+          - - 4
+            - 1
+        out: 
+          - - 5
+
+      # Residual addition
+      - type: 'add'
+        in:
+          - - 1
+            - 5
+        out:
+          - - 6
+
+  # Bottleneck layer
+  - name: 'bottleneck'
+    in:
+      - - 0
+    out:
+      - - 10
+
+    # Bottleneck operations
+    operations:
+      
+      # Group normalization
+      - type: 'groupnorm'
+        num_groups: 8
+        in:
+          - - 0
+        out:
+          - - 1
+
+      # ReLU activation
+      - type: 'relu'
+        inplace: True
+        in:
+          - - 1
+        out:
+          - - 2
+
+      # In-projection
+      - type: 'conv2d'
+        out_channels: 64
+        kernel_size: 1
+        in:
+          - - 2
+        out:
+          - - 3
+
+      # Group normalization
+      - type: 'groupnorm'
+        num_groups: 8
+        in:
+          - - 3
+        out:
+          - - 4
+
+      # ReLU activation
+      - type: 'relu'
+        inplace: True
+        in:
+          - - 4
+        out:
+          - - 5
+
+      # Level processing
+      - type: 'conv2d'
+        out_channels: 64
+        kernel_size: 3
+        stride: 1
+        padding: 1
+        in:
+          - - 5
+        out:
+          - - 6
+
+      # Group normalization
+      - type: 'groupnorm'
+        num_groups: 8
+        in:
+          - - 6
+        out:
+          - - 7
+
+      # ReLU activation
+      - type: 'relu'
+        inplace: True
+        in:
+          - - 7
+        out:
+          - - 8
+
+      # Out-projection
+      - type: 'conv2d'
+        out_channels: 256
+        kernel_size: 1
+        in:
+          - - 8
+        out:
+          - - 9
+
+      # Residual addition
+      - type: 'add'
+        in:
+          - - 0
+            - 9
+        out:
+          - - 10
+
+  # Bottom-up layer
+  - name: 'bottom-up'
+    in:
+      - - 0
+        - 1
+    out:
+      - - 11
+
+    # Bottom-up operations
+    operations:
+      
+      # Group normalization
+      - type: 'groupnorm'
+        num_groups: 8
+        in:
+          - - 0
+        out:
+          - - 2
+
+      # ReLU activation
+      - type: 'relu'
+        inplace: True
+        in:
+          - - 2
+        out:
+          - - 3
+
+      # In-projection
+      - type: 'conv2d'
+        out_channels: 64
+        kernel_size: 1
+        in:
+          - - 3
+        out:
+          - - 4
+
+      # Group normalization
+      - type: 'groupnorm'
+        num_groups: 8
+        in:
+          - - 4
+        out:
+          - - 5
+
+      # ReLU activation
+      - type: 'relu'
+        inplace: True
+        in:
+          - - 5
+        out:
+          - - 6
+
+      # Level processing
+      - type: 'conv2d'
+        out_channels: 64
+        kernel_size: 3
+        stride: 2
+        padding: 1
+        in:
+          - - 6
+        out:
+          - - 7
+
+      # Group normalization
+      - type: 'groupnorm'
+        num_groups: 8
+        in:
+          - - 7
+        out:
+          - - 8
+
+      # ReLU activation
+      - type: 'relu'
+        inplace: True
+        in:
+          - - 8
+        out:
+          - - 9
+
+      # Out-projection
+      - type: 'conv2d'
+        out_channels: 256
+        kernel_size: 1
+        in:
+          - - 9
+        out:
+          - - 10
+
+      # Residual addition
+      - type: 'add'
+        in:
+          - - 1
+            - 10
+        out:
+          - - 11
+
+  # TPN layer
+  - name: 'tpn'
+    in:
+      - - 0 # P7
+        - 1 # P6
+        - 2 # P5
+        - 3 # P4
+        - 4 # P3
+    out: 
+      - - 18 # P3
+        - 19 # P4
+        - 20 # P5
+        - 21 # P6
+        - 22 # P7
+    
+    # TPN operations
+    operations:
+
+      # Top-down layer
+      - type: 'layer'
+        name: 'top-down'
+        in:
+          - - 0 # P7
+            - 1 # P6
+          - - 5 # P6
+            - 2 # P5
+          - - 6 # P5
+            - 3 # P4
+          - - 7 # P4
+            - 4 # P3
+        out:
+          - - 5 # P6
+          - - 6 # P5
+          - - 7 # P4
+          - - 8 # P3
+
+      # Bottleneck layer
+      - type: 'layer'
+        name: 'bottleneck'
+        num_layers: 2
+        in:
+          - - 0 # P7
+          - - 5 # P6
+          - - 6 # P5
+          - - 7 # P4
+          - - 8 # P3
+        out:
+          - - 9  # P7 new
+          - - 10 # P6 new
+          - - 11 # P5 new
+          - - 12 # P4 new
+          - - 13 # P3 new
+        out_to_in:
+          - - 0 # P7 old
+          - - 5 # P6 old
+          - - 6 # P5 old
+          - - 7 # P4 old
+          - - 8 # P3 old
+
+      # Bottom-up layer
+      - type: 'layer'
+        name: 'bottom-up'
+        in:
+          - - 13 # P3
+            - 12 # P4
+          - - 14 # P4
+            - 11 # P5
+          - - 15 # P5
+            - 10 # P6
+          - - 16 # P6
+            - 9  # P7
+        out:
+          - - 14 # P4
+          - - 15 # P5
+          - - 16 # P6
+          - - 17 # P7
+
+      # Bottleneck layer
+      - type: 'layer'
+        name: 'bottleneck'
+        num_layers: 2
+        in:
+          - - 13 # P3
+          - - 14 # P4
+          - - 15 # P5
+          - - 16 # P6
+          - - 17 # P7
+        out:
+          - - 18 # P3 new
+          - - 19 # P4 new
+          - - 20 # P5 new
+          - - 21 # P6 new
+          - - 22 # P7 new
+        out_to_in:
+          - - 13 # P3 old
+          - - 14 # P4 old
+          - - 15 # P5 old
+          - - 16 # P6 old
+          - - 17 # P7 old
+
+operations:
+
+  # Lateral projection
+  - type: 'conv2d'
+    out_channels: 256
+    kernel_size: 1
+    weight_init: 'kaiming_uniform_'
+    weight_init_a: 1
+    bias_init: 'zeros_'
+    in:
+      - - 2
+      - - 1
+      - - 0
+    out:
+      - - 3
+      - - 4
+      - - 5
+
+  # Get P6 from original P5
+  - type: 'conv2d'
+    out_channels: 256
+    kernel_size: 3
+    stride: 2
+    padding: 1
+    weight_init: 'kaiming_uniform_'
+    weight_init_a: 1
+    bias_init: 'zeros_'
+    in: 
+      - - 2
+    out: 
+      - - 6
+
+  # Get ReLU P6
+  - type: 'relu'
+    inplace: False
+    in: 
+      - - 6
+    out: 
+      - - 7
+
+  # Get P7 from ReLU P6
+  - type: 'conv2d'
+    out_channels: 256
+    kernel_size: 3
+    stride: 2
+    padding: 1
+    weight_init: 'kaiming_uniform_'
+    weight_init_a: 1
+    bias_init: 'zeros_'
+    in: 
+      - - 7
+    out: 
+      - - 8
+
+  # TPN
+  - type: 'layer'
+    name: 'tpn'
+    num_layers: 3
+    in:
+      - - 8 # P7
+        - 6 # P6
+        - 3 # P5
+        - 4 # P4
+        - 5 # P3
+    out:
+      - - 9  # P3
+        - 10 # P4
+        - 11 # P5
+        - 12 # P6
+        - 13 # P7
+    out_to_in:
+      - - 5 # P3 old
+        - 4 # P4 old
+        - 3 # P5 old
+        - 6 # P6 old
+        - 8 # P7 old
+
+outputs:
+  - 9  # P3
+  - 10 # P4
+  - 11 # P5
+  - 12 # P6
+  - 13 # P7
+...
