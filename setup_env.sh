@@ -23,6 +23,9 @@ mim install mmengine
 mim install mmcv
 python -m pip install git+https://github.com/open-mmlab/mmdetection.git
 
+# Install timm
+python -m pip install timm
+
 # Install from git repositories using pip
 python -m pip install git+https://github.com/CedricPicron/boundary-iou-api.git
 python -m pip install git+https://github.com/CedricPicron/Deformable-DETR.git
