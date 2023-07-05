@@ -1,7 +1,7 @@
 # FQDet
 
 ## :page_with_curl: Paper
-- [FQDet: Fast-converging Query-based Detector](https://arxiv.org/abs/2210.02318) by [Cédric Picron](https://github.com/CedricPicron), [Punarjay Chakravarty](https://scholar.google.be/citations?user=AyXW9gYAAAAJ&hl) and [Tinne Tuytelaars](https://scholar.google.be/citations?user=EuFF9kUAAAAJ).
+- [FQDet: Fast-converging Query-based Detector](https://arxiv.org/abs/2210.02318) by [Cédric Picron](https://cedricpicron.github.io), [Punarjay Chakravarty](https://scholar.google.be/citations?user=AyXW9gYAAAAJ&hl) and [Tinne Tuytelaars](https://scholar.google.be/citations?user=EuFF9kUAAAAJ).
 
 ## :newspaper: News
 - **`01 Jun, 2023`:** FQDet logs and checkpoints released.
