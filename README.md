@@ -13,9 +13,9 @@ Object detection results on the 2017 COCO validation set. The inference FLOPs an
 
 | Backbone | Detector | Epochs |  AP  | Params | GFLOPs |  FPS  | Script | Log | Checkpoint |
 |   :-:    |   :-:    |  :-:   | :-:  |  :-:   |  :-:   |  :-:  |  :-:   | :-: |    :-:     |
-| R50+FPN  |  FQDet   |   12   | **43.3** | 33.9 M |  99.0  |  20.9 | [script](scripts/r50_fpn_fqdet_12e.sh) | [log](outputs/r50_fpn_fqdet_12e/log.txt) | [checkpoint](https://drive.google.com/drive/folders/1_MYDpsh__lHkAs7XfBLazZijnKyaZB0Q?usp=sharing) |
-| R50+TPN  |  FQDet   |   12   | **45.5** | 42.2 M |  107.8  |  13.6 | [script](scripts/r50_tpn_fqdet_12e.sh) | [log](outputs/r50_tpn_fqdet_12e/log.txt) | [checkpoint](https://drive.google.com/drive/folders/1_MYDpsh__lHkAs7XfBLazZijnKyaZB0Q?usp=sharing) |
-| R50+DefEnc  |  FQDet   |   12   | **47.2** | 44.1 M |  234.8  |  9.7 |  [script](scripts/r50_def_fqdet_12e.sh) | [log](outputs/r50_def_fqdet_12e/log.txt) | [checkpoint](https://drive.google.com/drive/folders/1_MYDpsh__lHkAs7XfBLazZijnKyaZB0Q?usp=sharing) |
+| R50+FPN  |  FQDet   |   12   | **43.3** | 33.9 M |  99.0  |  20.9 | [script](scripts/r50_fpn_fqdet_12e.sh) | [log](outputs/r50_fpn_fqdet_12e/log.txt) | [checkpoint](https://drive.google.com/drive/folders/1rLhwkT1CwZdpiuWD0-a_9B5UnkA4D-e0?usp=sharing) |
+| R50+TPN  |  FQDet   |   12   | **45.5** | 42.2 M |  107.8  |  13.6 | [script](scripts/r50_tpn_fqdet_12e.sh) | [log](outputs/r50_tpn_fqdet_12e/log.txt) | [checkpoint](https://drive.google.com/drive/folders/1rLhwkT1CwZdpiuWD0-a_9B5UnkA4D-e0?usp=sharing) |
+| R50+DefEnc  |  FQDet   |   12   | **47.2** | 44.1 M |  234.8  |  9.7 |  [script](scripts/r50_def_fqdet_12e.sh) | [log](outputs/r50_def_fqdet_12e/log.txt) | [checkpoint](https://drive.google.com/drive/folders/1rLhwkT1CwZdpiuWD0-a_9B5UnkA4D-e0?usp=sharing) |
 
 ## :hammer_and_wrench: Installation
 - **Environment**: 
